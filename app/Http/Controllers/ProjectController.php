@@ -15,7 +15,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::simplePaginate(10);
+        $projects = Project::paginate(10);
         return Inertia::render('Project/Index',['projects' => $projects]);
     }
 
