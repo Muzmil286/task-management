@@ -84,6 +84,8 @@ const form = useForm({
     url : null,
     ipAddress:null,
     adminName:null,
+    adminEmail:null,
+    password:null
 
 })
 const submit = () => {

@@ -40,12 +40,19 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required|unique:projects,title|max:255',
             'url' => 'sometimes|unique:projects,url|max:255',
-            'ipAddress' => 'sometimes|unique:projects,ip_address|max:255',
+            'ip_address' => 'sometimes|unique:projects,ip_address|max:255',
             'adminName' => 'required|max:255|string',
             'adminEmail' => 'required|max:255|email',
             'password' => 'required|min:5|max:255'
         ]);
-        $project = Project::create($request->all());
+        $project = new Project();
+        $project->title = $request->title;
+        $project->url = $request->url;
+        $project->ip_address = $request->ipAddress;
+        $project->admin_name = $request->adminName;
+        $project->admin_email = $request->adminEmail;
+        $project->admin_password = $request->password;
+        $project->save();
         return redirect()->route('projects.index')->with('success' , 'Project added successfully!');
     }
 
@@ -57,7 +64,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return Inertia::render('Project/Show',['project' => $project]);
+        return redirect()->route('projects.index');
+        // return Inertia::render('Project/Show',['project' => $project]);
     }
 
     /**
@@ -68,6 +76,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        
         return Inertia::render('Project/Edit',['project' => $project]);
     }
 
@@ -88,7 +97,14 @@ class ProjectController extends Controller
             'adminEmail' => 'required|max:255|email',
             'password' => 'required|min:5|max:255'
         ]);
-        $project->update($request->all());
+        // $project->update($request->all());
+        $project->title = $request->title;
+        $project->url = $request->url;
+        $project->ip_address = $request->ipAddress;
+        $project->admin_name = $request->adminName;
+        $project->admin_email = $request->adminEmail;
+        $project->admin_password = $request->password;
+        $project->save();
         return redirect()->route('projects.index')->with('success' ,'Project updated successfully!');
     }
 
@@ -100,7 +116,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        // return $project->title;    
         $project->delete();
-        return redirect()->back()->with('success' , 'Project deleted successfully');
+        return redirect()->route('projects.index')->with('success' , 'Project deleted successfully');
     }
 }
